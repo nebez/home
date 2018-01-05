@@ -3,6 +3,7 @@
 
 # Except...
 !.gitignore
+!.bash_aliases
 !.bashrc
 !.profile
 !/bin/*
