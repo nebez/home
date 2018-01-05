@@ -1,0 +1,66 @@
+#!/bin/bash
+set -eu
+
+cd "$(dirname "$0")"
+source ../.secrets
+
+if [ -z ${JIRA_AUTH_TOKEN+x} ]; then echo "Missing env var JIRA_AUTH_TOKEN" && exit 1; fi
+
+# Get list of commits either from the current git repo or as a list of
+# arguments separated by space
+if [[ -z $1 ]]; then
+    JIRA_TICKETS=$(git log --oneline --since "2017-11-11T00:00:00" | grep -Po '\w{2,}-\d{1,}')
+else
+    JIRA_TICKETS=$(echo "$@" | sed 's/ /\n/g')
+fi
+
+JIRA_TICKETS=$(echo "$JIRA_TICKETS" | tr '[:lower:]' '[:upper:]' | sort | uniq)
+
+declare -A EPIC_NAMES=(
+    ["DO-6"]="Website"
+    ["DO-7"]="ERP"
+    ["DO-11"]="Learning Library"
+    ["DO-661"]="POS"
+    ["DO-662"]="API"
+    ["DEV-25"]="ERP"
+    ["DEV-26"]="POS"
+    ["DEV-27"]="Website"
+    ["DEV-28"]="API"
+    ["POS-59"]="Refund"
+    ["POS-60"]="Setup"
+    ["POS-61"]="Login"
+    ["POS-62"]="Navigation"
+    ["POS-63"]="Sale"
+    ["POS-65"]="Reports"
+    ["POS-67"]="Promotions"
+    ["POS-68"]="Inventory"
+    ["POS-69"]="Customers"
+    ["POS-71"]="Transactions"
+    ["null"]="Uncategorized"
+)
+
+for JIRA_TICKET in $JIRA_TICKETS; do
+    TICKET_DATA=$(curl -sS -H "Authorization: Basic $JIRA_AUTH_TOKEN" https://lxrcanada.atlassian.net/rest/api/latest/issue/$JIRA_TICKET)
+    TICKET_EPIC=$(echo $TICKET_DATA | jq -r '.fields.customfield_10118')
+    TICKET_NAME=$(echo $TICKET_DATA | jq -r '.fields.summary')
+    TICKET_TYPE=$(echo $TICKET_DATA | jq -r '.fields.issuetype.name')
+    TICKET_STATUS=$(echo $TICKET_DATA | jq -r '.fields.status.name')
+    TICKET_RESOLUTION=$(echo $TICKET_DATA | jq -r '.fields.resolution.name')
+
+    # Ensure the Epic has been mapped or throw
+    if [ ! ${EPIC_NAMES[$TICKET_EPIC]+abc} ]; then
+        echo "Missing epic mapping $TICKET_EPIC for ticket $JIRA_TICKET"
+        exit 1
+    fi
+
+    if [ "$TICKET_NAME" == "null" ]; then
+        continue
+    fi
+
+    if [[ ("$TICKET_STATUS" != "Done" && "$TICKET_STATUS" != "Resolved") || "$TICKET_RESOLUTION" != "Done" ]]; then
+        echo "Skipping $JIRA_TICKET for bad status ${TICKET_STATUS}:${TICKET_RESOLUTION}"
+        continue;
+    fi
+
+    echo "<li class=\"${TICKET_TYPE,,}\"><a href=\"https://lxrcanada.atlassian.net/browse/${JIRA_TICKET}\">${JIRA_TICKET}</a>: <span class=\"badge\">${EPIC_NAMES[$TICKET_EPIC]}</span> $TICKET_NAME</li>"
+done

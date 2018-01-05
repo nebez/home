@@ -6,4 +6,9 @@
 !.bash_aliases
 !.bashrc
 !.profile
-!/bin/*
+!/bin/
+!/bin/aws-hosts
+!/bin/colors
+!/bin/release-notes
+!/bin/ssc
+!/bin/ssh-multi

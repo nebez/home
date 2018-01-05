@@ -1,0 +1,1 @@
+aws ec2 describe-instances --query "Reservations[*].Instances[*].PublicIpAddress" --output=text --filters "Name=tag:Name,Values=$1" | tr '\t' '\n'

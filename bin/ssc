@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+HOSTS="$(aws-hosts $1 | tr '\n' ' ')"
+
+if [ -z "${HOSTS}" ]; then
+	echo "No instances named \"$1\""
+	exit 1
+fi
+
+ssh-multi -u nebez -d "${HOSTS}"
