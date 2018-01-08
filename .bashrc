@@ -66,8 +66,19 @@ if [ "$color_prompt" = yes ]; then
         git rev-parse --short HEAD 2>/dev/null
     }
 
+    error_test() {
+        local EXITCODE="$?"
+
+        local LIGHTRED="\033[1;31m"
+        local RESET="\033[0;00m"
+
+        if [[ "$EXITCODE" != "0" ]]; then
+            echo -e "${LIGHTRED}[${EXITCODE}]${RESET}"
+        fi
+    }
+
     # λ $
-    PROMPT_COMMAND='__git_ps1 "\[\e]0;\w\a\]\n\[\e[32m\]\u \[\e[33m\]\w\[\e[0m\] " "\nλ " "(%s \e[1;37m$(get_sha)\e[0m)"'
+    PROMPT_COMMAND='__git_ps1 "\[\e]0;\w\a\]\n\[\e[32m\]\u \[\e[33m\]\w\[\e[0m\] " " $(error_test)\nλ " "(%s \e[1;37m$(get_sha)\e[0m)"'
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
