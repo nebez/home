@@ -10,6 +10,7 @@
 !/bin/
 !/bin/aws-hosts
 !/bin/colors
+!/bin/obfuscate-db
 !/bin/release-notes
 !/bin/ssc
 !/bin/ssh-multi

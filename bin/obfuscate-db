@@ -1,0 +1,117 @@
+#!/bin/bash
+set -e
+
+datelog() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1"
+}
+
+DUMP_DATE=$(date +'%Y-%m-%d')
+
+TARGET_MYSQL_HOST=localhost
+TARGET_MYSQL_USER=root
+TARGET_MYSQL_PASS=root
+TARGET_MYSQL_DB=tmp
+
+datelog "Preparing dumps in /tmp/dump/$DUMP_DATE"
+mkdir -p /tmp/dump/$DUMP_DATE/
+mkdir -p /dumper/www/dumps/
+
+for DB_NAME in db1 db2; do
+    datelog "Starting \"$DB_NAME\"..."
+
+    SOURCE_MYSQL_HOST="$(echo "$DB_NAME" | tr '[:lower:]' '[:upper:]')_MYSQL_HOST"
+    SOURCE_MYSQL_HOST="${!SOURCE_MYSQL_HOST}"
+
+    SOURCE_MYSQL_USER="$(echo "$DB_NAME" | tr '[:lower:]' '[:upper:]')_MYSQL_USER"
+    SOURCE_MYSQL_USER="${!SOURCE_MYSQL_USER}"
+
+    SOURCE_MYSQL_PASS="$(echo "$DB_NAME" | tr '[:lower:]' '[:upper:]')_MYSQL_PASS"
+    SOURCE_MYSQL_PASS="${!SOURCE_MYSQL_PASS}"
+
+    SOURCE_MYSQL_DB="$(echo "$DB_NAME" | tr '[:lower:]' '[:upper:]')_MYSQL_DB"
+    SOURCE_MYSQL_DB="${!SOURCE_MYSQL_DB}"
+
+    datelog "Dumping source schema"
+    mysqldump \
+        -h $SOURCE_MYSQL_HOST \
+        -u $SOURCE_MYSQL_USER \
+        -p$SOURCE_MYSQL_PASS $SOURCE_MYSQL_DB \
+        --lock-tables=false \
+        --no-data \
+        --triggers=false \
+        --routines=false \
+        > /tmp/dump/${DUMP_DATE}/${DB_NAME}_schema.sql
+
+    datelog "Dumping source data"
+    mysqldump \
+        -h $SOURCE_MYSQL_HOST \
+        -u $SOURCE_MYSQL_USER \
+        -p$SOURCE_MYSQL_PASS $SOURCE_MYSQL_DB \
+        --lock-tables=false \
+        --no-create-info \
+        --triggers=false \
+        --routines=false \
+        --ignore-table=$SOURCE_MYSQL_DB.pageviews \
+        --ignore-table=$SOURCE_MYSQL_DB.log \
+        --ignore-table=$SOURCE_MYSQL_DB.failed_jobs \
+        --ignore-table=$SOURCE_MYSQL_DB.import_log \
+        --ignore-table=$SOURCE_MYSQL_DB.inventory_list_per_date \
+        --ignore-table=$SOURCE_MYSQL_DB.adminLogs \
+        > /tmp/dump/${DUMP_DATE}/${DB_NAME}_data.sql
+
+    datelog "Dumping triggers and routines"
+    mysqldump \
+        -h $SOURCE_MYSQL_HOST \
+        -u $SOURCE_MYSQL_USER \
+        -p$SOURCE_MYSQL_PASS $SOURCE_MYSQL_DB \
+        --lock-tables=false \
+        --no-data \
+        --no-create-info \
+        --triggers=true \
+        --routines=true \
+        > /tmp/dump/${DUMP_DATE}/${DB_NAME}_triggers.sql
+    # Annoyingly, this thing includes the name of the database and the
+    # definer. Things break when loading it into the `tmp` schema.
+    sed -i '/ALTER DATABASE/d' /tmp/dump/${DUMP_DATE}/${DB_NAME}_triggers.sql
+    sed -i 's/DEFINER[ ]*=[ ]*[^*]*\*/\*/' /tmp/dump/${DUMP_DATE}/${DB_NAME}_triggers.sql
+
+    datelog "Dropping and re-creating temporary obfuscation table"
+    mysql -h $TARGET_MYSQL_HOST -u $TARGET_MYSQL_USER -p$TARGET_MYSQL_PASS \
+        -e "DROP DATABASE IF EXISTS $TARGET_MYSQL_DB; CREATE DATABASE $TARGET_MYSQL_DB;"
+
+    datelog "Importing schema"
+    mysql -h $TARGET_MYSQL_HOST -u $TARGET_MYSQL_USER -p$TARGET_MYSQL_PASS $TARGET_MYSQL_DB < /tmp/dump/${DUMP_DATE}/${DB_NAME}_schema.sql
+
+    datelog "Importing data"
+    mysql -h $TARGET_MYSQL_HOST -u $TARGET_MYSQL_USER -p$TARGET_MYSQL_PASS $TARGET_MYSQL_DB < /tmp/dump/${DUMP_DATE}/${DB_NAME}_data.sql
+
+    datelog "Obfuscating sensitive tables"
+    mysql -h $TARGET_MYSQL_HOST -u $TARGET_MYSQL_USER -p$TARGET_MYSQL_PASS $TARGET_MYSQL_DB < /dumper/obfuscators/${DB_NAME}.sql
+
+    # We do this part after so that the triggers do not activate while
+    # obfuscating sensitive tables. This would trash a bunch of data and
+    # insert millions of rows into the logs. No no!
+    datelog "Importing triggers and routines"
+    mysql -h $TARGET_MYSQL_HOST -u $TARGET_MYSQL_USER -p$TARGET_MYSQL_PASS $TARGET_MYSQL_DB < /tmp/dump/${DUMP_DATE}/${DB_NAME}_triggers.sql
+
+    datelog "Exporting and compressing obfuscated dump"
+    mysqldump -h $TARGET_MYSQL_HOST -u $TARGET_MYSQL_USER -p$TARGET_MYSQL_PASS $TARGET_MYSQL_DB | sed -e 's/DEFINER[ ]*=[ ]*[^*]*\*/\*/' | gzip > /dumper/www/dumps/${DB_NAME}_${DUMP_DATE}.sql.gz
+
+    datelog "Exporting latest dump info"
+    echo "/dumps/${DB_NAME}_${DUMP_DATE}.sql.gz" >> /dumper/www/dumps/${DB_NAME}_history.txt
+    echo "/dumps/${DB_NAME}_${DUMP_DATE}.sql.gz" > /dumper/www/dumps/${DB_NAME}_latest.txt
+
+    datelog "Finished \"$DB_NAME\""
+done
+
+datelog "Cleaning up..."
+rm -rf /tmp/dump/
+
+# Retain the last 15 dumps
+(cd /dumper/www/dumps/ && ls -t db1_*.sql.gz | tail -n +16 | xargs -I {} rm -r {})
+(cd /dumper/www/dumps/ && ls -t db2_*.sql.gz | tail -n +16 | xargs -I {} rm -r {})
+
+mysql -h $TARGET_MYSQL_HOST -u $TARGET_MYSQL_USER -p$TARGET_MYSQL_PASS \
+    -e "DROP DATABASE IF EXISTS $TARGET_MYSQL_DB;"
+
+datelog "Done!"
