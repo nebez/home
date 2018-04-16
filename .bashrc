@@ -129,6 +129,3 @@ PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 # Add GO to path
 GOPATH="$HOME/go"
 PATH="/usr/local/go/bin:$GOPATH:$GOPATH/bin:$PATH"
-
-# Add Composer bins to path
-PATH="$HOME/.composer/vendor/bin:$PATH"
