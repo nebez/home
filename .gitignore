@@ -3,6 +3,8 @@
 
 # Except...
 !.gitignore
+!.gitignore_global
+!.gitconfig
 !.bash_aliases
 !.bashrc
 !.profile
