@@ -16,3 +16,5 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+# if on a mac keyboard layout, install below patched apple kernel module
+# https://github.com/free5lot/hid-apple-patched
