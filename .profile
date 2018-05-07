@@ -16,5 +16,10 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-# if on a mac keyboard layout, install below patched apple kernel module
+# if on a mac keyboard layout (hid_apple), install below patched apple kernel module
 # https://github.com/free5lot/hid-apple-patched
+
+# And on a mac mouse (hid_magicmouse), use below options in /etc/modprobe.d/hid_magicmouse.conf:
+# options hid_magicmouse emulate_3button=N
+# options hid_magicmouse scroll-speed=45
+# options hid_magicmouse scroll-acceleration=1
