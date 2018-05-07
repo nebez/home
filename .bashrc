@@ -121,6 +121,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# enable hub cli completions
+if [ -f ~/bin/completions/hub-completion.sh ]; then
+  . ~/bin/completions/hub-completion.sh
+fi
+
 set completion-ignore-case On
 
 # set PATH so it includes user's private bin if it exists
