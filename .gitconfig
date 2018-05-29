@@ -3,7 +3,7 @@
 	email = me@nebezb.com
 [alias]
 	s = status -s
-	pr = "!hub pull-request"
+	pr = "!hub pull-request -b $1"
 	last = log -1 HEAD
 	proon = fetch origin --prune
 	aliases = "!git config -l | grep alias | cut -c 7-"
