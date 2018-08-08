@@ -13,6 +13,7 @@
 !/bin/
 !/bin/aws-hosts
 !/bin/colors
+!/bin/diff-so-fancy
 !/bin/obfuscate-db
 !/bin/release-notes
 !/bin/ssc
