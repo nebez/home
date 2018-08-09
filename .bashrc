@@ -43,7 +43,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -60,8 +60,10 @@ if [ "$color_prompt" = yes ]; then
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
     source ~/bin/completions/git-prompt.sh
     source ~/bin/completions/git-completion.sh
+
     export GIT_PS1_SHOWCOLORHINTS=1
     export GIT_PS1_DESCRIBE_STYLE="branch"
+
     get_sha() {
         git rev-parse --short HEAD 2>/dev/null
     }
@@ -78,20 +80,21 @@ if [ "$color_prompt" = yes ]; then
     }
 
     # λ $
-    PROMPT_COMMAND='__git_ps1 "\[\e]0;\w\a\]\n\[\e[32m\]\u \[\e[33m\]\w\[\e[0m\] " " $(error_test)\nλ " "(%s \e[1;37m$(get_sha)\e[0m)"'
+    PROMPT_COMMAND='__git_ps1 "\n\[\e[32m\]\u \[\e[33m\]\w\[\e[0m\] " " $(error_test)\nλ " "(%s \e[1;37m$(get_sha)\e[0m)"'
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
+# COMMENTED OUT IN FAVOR OF ABOVE
 # If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+# case "$TERM" in
+# xterm*|rxvt*)
+#     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+#     ;;
+# *)
+#     ;;
+# esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
