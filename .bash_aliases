@@ -18,6 +18,8 @@ alias du='du -h'
 
 alias nano='nano -wuc'
 
+alias yarn='yarn --silent'
+
 alias clip='xclip -selection clipboard'
 
 alias e.='nautilus --no-desktop --browser . &> /dev/null &'
