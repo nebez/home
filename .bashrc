@@ -137,3 +137,7 @@ PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 # Add GO to path
 GOPATH="$HOME/go"
 PATH="/usr/local/go/bin:$GOPATH:$GOPATH/bin:$PATH"
+JAVA_HOME="/usr/lib/jvm/java-8-oracle/jre/bin/java"
+
+# Add deno to path
+PATH="$PATH:/home/nebez/.deno/bin"
