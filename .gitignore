@@ -21,3 +21,6 @@
 
 !/bin/completions/
 !/bin/completions/*
+
+!/bin/mac-webcam/
+!/bin/mac-webcam/*

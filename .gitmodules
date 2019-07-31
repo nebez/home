@@ -1,0 +1,3 @@
+[submodule "bin/mac-webcam/bcwc_pcie"]
+	path = bin/mac-webcam/bcwc_pcie
+	url = https://github.com/patjak/bcwc_pcie.git
