@@ -13,3 +13,5 @@
 	editor = nano
 [diff-so-fancy]
 	markEmptyLines = false
+[credential]
+	helper = osxkeychain
