@@ -23,7 +23,8 @@ shopt -s checkwinsize
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
+# If you'd like to use existing homebrew v1 completions, uncomment the following line:
+export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"

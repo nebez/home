@@ -12,7 +12,7 @@ alias mv='mv -i'
 alias df='df -h'
 alias du='du -h'
 
-alias nano='nano -wuc'
+alias nano='nano -wc'
 
 alias yarn='yarn --silent'
 
