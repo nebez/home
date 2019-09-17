@@ -5,6 +5,7 @@
 !.gitignore
 !.gitignore_global
 !.gitconfig
+!.git-prompt.sh
 !.bash_aliases
 !.bash_profile
 !.inputrc
