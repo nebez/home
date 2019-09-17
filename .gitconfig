@@ -10,5 +10,6 @@
 [core]
 	excludesfile = /Users/nebez.briefkani/.gitignore_global
 	pager = diff-so-fancy | less --tabs=4 -RFX
+	editor = nano
 [diff-so-fancy]
 	markEmptyLines = false
