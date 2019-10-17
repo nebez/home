@@ -15,3 +15,5 @@
 	markEmptyLines = false
 [credential]
 	helper = osxkeychain
+[hub]
+	protocol = https
