@@ -17,3 +17,5 @@
 	helper = osxkeychain
 [hub]
 	protocol = https
+[commit]
+	gpgsign = true
