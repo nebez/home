@@ -53,3 +53,7 @@ if [ -f ~/.git-prompt.sh ]; then
     # λ $
     PROMPT_COMMAND='__git_ps1 "\n\[\e[32m\]\u \[\e[33m\]\w\[\e[0m\] " " $(error_test)\nλ " "(%s \e[1;37m$(get_sha)\e[0m)"'
 fi
+
+# Fix for gpg passphrase prompt
+# https://github.com/keybase/keybase-issues/issues/2798
+export GPG_TTY=$(tty)
