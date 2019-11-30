@@ -57,3 +57,5 @@ fi
 # Fix for gpg passphrase prompt
 # https://github.com/keybase/keybase-issues/issues/2798
 export GPG_TTY=$(tty)
+
+export PATH="/usr/local/opt/ruby/bin:$HOME/.gem/ruby/2.6.0/bin:$PATH"
