@@ -33,3 +33,4 @@ set completion-ignore-case on
 set show-all-if-ambiguous on
 set convert-meta off
 set visible-stats on
+set mark-symlinked-directories on
