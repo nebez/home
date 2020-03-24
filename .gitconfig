@@ -1,6 +1,5 @@
 [user]
-	name = Nebez Briefkani
-	email = nebez.briefkani@lightspeedhq.com
+	useConfigOnly = true
 [alias]
 	s = status -s
 	pr = "!hub pull-request -b $1"
@@ -13,9 +12,13 @@
 	editor = nano
 [diff-so-fancy]
 	markEmptyLines = false
-[credential]
-	helper = osxkeychain
 [hub]
 	protocol = https
-[commit]
-	gpgsign = true
+[includeIf "gitdir:/Volumes/Development/src/github.com/lightspeed/"]
+	path = /Volumes/Development/src/github.com/lightspeed/gitconfig.inc
+[includeIf "gitdir:/Volumes/Development/src/github.com/lightspeedretail/"]
+        path = /Volumes/Development/src/github.com/lightspeedretail/gitconfig.inc
+[includeIf "gitdir:/Volumes/Development/src/github.com/LightspeedServices/"]
+        path = /Volumes/Development/src/github.com/LightspeedServices/gitconfig.inc
+[includeIf "gitdir:/Volumes/Development/src/github.com/nebez/"]
+        path = /Volumes/Development/src/github.com/nebez/gitconfig.inc

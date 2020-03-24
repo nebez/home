@@ -59,3 +59,6 @@ fi
 export GPG_TTY=$(tty)
 
 export PATH="/usr/local/opt/ruby/bin:$HOME/.gem/ruby/2.6.0/bin:$PATH"
+
+# Export for lightspeed dev environment
+export SHARED_ENV_PATH=~/src/github.com/lightspeedretail/docker-shared-environment
