@@ -17,3 +17,5 @@ alias nano='nano -wc'
 alias yarn='yarn --silent'
 
 alias clip='pbcopy'
+
+alias clean_chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --user-data-dir="$(mktemp -d)" --disable-extensions'
