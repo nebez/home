@@ -24,3 +24,5 @@
         path = /Volumes/Development/src/github.com/nebez/gitconfig.inc
 [includeIf "gitdir:/Volumes/Development/src/github.com/latitude85/"]
         path = /Volumes/Development/src/github.com/latitude85/gitconfig.inc
+[pull]
+	rebase = false
