@@ -20,20 +20,19 @@ alias clip='pbcopy'
 
 alias clean_chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --user-data-dir="$(mktemp -d)" --disable-extensions'
 
-alias tcurl='curl -so /dev/null -w "\nContent Type: %{content_type} \
-\nHTTP Code: %{http_code} \
-\nHTTP Connect:%{http_connect} \
-\nNumber Connects: %{num_connects} \
-\nNumber Redirects: %{num_redirects} \
-\nRedirect URL: %{redirect_url} \
-\nSize Download: %{size_download} \
-\nSize Upload: %{size_upload} \
-\nSSL Verify: %{ssl_verify_result} \
-\nTime Handshake: %{time_appconnect} \
-\nTime Connect: %{time_connect} \
-\nName Lookup Time: %{time_namelookup} \
-\nTime Pretransfer: %{time_pretransfer} \
-\nTime Redirect: %{time_redirect} \
-\nTime Start Transfer: %{time_starttransfer} \
-\nTime Total: %{time_total} \
-\nEffective URL: %{url_effective}\n"'
+alias tcurl='curl -so /dev/null -w "\
+                HTTP: %{http_version} %{http_code}\n\
+        Content Type: %{content_type}\n\
+     Number Connects: %{num_connects}\n\
+    Number Redirects: %{num_redirects}\n\
+        Redirect URL: %{redirect_url}\n\
+       Effective URL: %{url_effective}\n\
+       Size Download: %{size_download} bytes \n\
+      Time Handshake: %{time_appconnect}\n\
+     Time Namelookup: %{time_namelookup}\n\
+        Time Connect: %{time_connect}\n\
+    Time Pretransfer: %{time_pretransfer}\n\
+       Time Redirect: %{time_redirect}\n\
+ Time Start Transfer: %{time_starttransfer}\n\
+          Time Total: %{time_total}\n\
+"'
