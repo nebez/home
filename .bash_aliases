@@ -20,7 +20,8 @@ alias clip='pbcopy'
 
 alias clean_chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --user-data-dir="$(mktemp -d)" --disable-extensions'
 
-alias tcurl='curl -so /dev/null -w "\
+function tcurl() {
+  curl -so /dev/null -w "\
                 HTTP: %{http_version} %{http_code}\n\
         Content Type: %{content_type}\n\
      Number Connects: %{num_connects}\n\
@@ -35,4 +36,5 @@ alias tcurl='curl -so /dev/null -w "\
        Time Redirect: %{time_redirect}\n\
  Time Start Transfer: %{time_starttransfer}\n\
           Time Total: %{time_total}\n\
-"'
+  " "$@" | GREP_COLOR='1;30' grep -E "^.*: " --color=always
+}
