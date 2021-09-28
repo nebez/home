@@ -19,6 +19,10 @@
   # changes in each release.
   home.stateVersion = "21.11";
 
+  home.sessionVariables = {
+    EDITOR = "nano";
+  };
+
   programs.zsh = {
     enable = true;
     shellAliases = {
