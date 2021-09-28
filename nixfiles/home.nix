@@ -25,6 +25,7 @@
 
   programs.zsh = {
     enable = true;
+    enableSyntaxHighlighting = true;
     shellAliases = {
       config = "git --git-dir=$HOME/.cfg/ --work-tree=$HOME";
       ll = "ls -al";
@@ -38,7 +39,27 @@
       fi
     '';
     initExtraBeforeCompInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-    initExtra = "[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
+    initExtra = ''
+      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+      # Nixify the current directory
+      nixify() {
+        if [ ! -e ./.envrv ]; then
+          echo "use nix" > .envrc
+          direnv allow
+        fi
+        if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]]; then
+          # Make a default shell.nix and then pop open an editor
+          cat > shell.nix <<'EOF'
+with import <nixpkgs> {};
+mkShell {
+  buildInputs = [ nodejs-12_x ];
+}
+EOF
+          nano shell.nix
+        fi
+      }
+    '';
     oh-my-zsh = {
       enable = true;
       plugins = [ "colored-man-pages" ];
