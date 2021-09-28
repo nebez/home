@@ -33,8 +33,7 @@
     initExtra = "[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
     oh-my-zsh = {
       enable = true;
-      plugins = [ "colored-man-pages" "themes" ];
-      theme = "robbyrussell";
+      plugins = [ "colored-man-pages" ];
     };
   };
 
