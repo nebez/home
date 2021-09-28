@@ -50,4 +50,9 @@
     userName = "Nebez Briefkani";
     userEmail = "me@nebezb.com";
   };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 }
