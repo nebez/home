@@ -29,6 +29,8 @@
       config = "git --git-dir=$HOME/.cfg/ --work-tree=$HOME";
       ll = "ls -al";
     };
+    initExtraBeforeCompInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+    initExtra = "[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
     oh-my-zsh = {
       enable = true;
       plugins = [ "colored-man-pages" "themes" ];
