@@ -35,4 +35,10 @@
       theme = "robbyrussell";
     };
   };
+
+  programs.git = {
+    enable = true;
+    userName = "Nebez Briefkani";
+    userEmail = "me@nebezb.com";
+  };
 }
