@@ -77,6 +77,20 @@ EOF
     nix-direnv.enable = true;
   };
 
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "github.com" = {
+        user = "git";
+      };
+      "*" = {
+        extraOptions = {
+          UseKeychain = "yes";
+        };
+      };
+    };
+  };
+
   home.packages = [
     pkgs.deno
   ];
