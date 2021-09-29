@@ -44,7 +44,7 @@
 
       # Nixify the current directory
       nixify() {
-        if [ ! -e ./.envrv ]; then
+        if [ ! -e ./.envrc ]; then
           echo "use nix" > .envrc
           direnv allow
         fi
