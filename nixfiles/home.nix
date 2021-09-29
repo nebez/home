@@ -78,5 +78,6 @@ EOF
   };
 
   home.packages = [
+    pkgs.deno
   ];
 }
