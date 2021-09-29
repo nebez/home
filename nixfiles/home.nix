@@ -1,3 +1,5 @@
+# Home manager `programs` can be found here
+# https://github.com/nix-community/home-manager/blob/master/modules/programs
 { config, pkgs, ... }:
 
 {
@@ -70,6 +72,12 @@ EOF
     enable = true;
     userName = "Nebez Briefkani";
     userEmail = "me@nebezb.com";
+    extraConfig = {
+      # We do this because, otherwise, git attempts to use the openssh built
+      # from nix which doesn't support UseKeychain. See below for more:
+      # https://github.com/NixOS/nixpkgs/issues/15686
+      core.sshCommand = "/usr/bin/ssh";
+    };
   };
 
   programs.direnv = {
