@@ -30,7 +30,8 @@
     enableSyntaxHighlighting = true;
     shellAliases = {
       config = "git --git-dir=$HOME/.cfg/ --work-tree=$HOME";
-      ll = "ls -al";
+      ls = "ls --color=auto --group-directories-first -A";
+      ll = "ls --color=auto --group-directories-first -al";
     };
     initExtraFirst = ''
       # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
