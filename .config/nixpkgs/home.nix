@@ -86,6 +86,9 @@ EOF
       # https://github.com/NixOS/nixpkgs/issues/15686
       core.sshCommand = "/usr/bin/ssh";
     };
+    ignores = [
+      ".direnv/"
+    ];
   };
 
   programs.direnv = {
