@@ -113,5 +113,6 @@ EOF
 
   home.packages = [
     pkgs.deno
+    pkgs.coreutils
   ];
 }
