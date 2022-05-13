@@ -90,6 +90,12 @@ EOF
     ignores = [
       ".direnv/"
     ];
+    delta = {
+      enable = true;
+      options = {
+        features = "line-numbers";
+      };
+    };
   };
 
   programs.direnv = {
