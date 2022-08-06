@@ -1,20 +1,19 @@
 # Home manager `programs` can be found here
 # https://github.com/nix-community/home-manager/blob/master/modules/programs
+{ config, ... }:
 
 let
   # This refers to channels in nix-channel --list
-  # nixpkgs is actually unstable -- maybe point this to something stable later?
-  pkgsUnstable = import <nixpkgs> { };
+  # Outputs
+  #   home-manager https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz
+  #   nixpkgs https://nixos.org/channels/nixos-22.05
+  #   nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
+  pkgs = import <nixpkgs-unstable> { };
 
-  # Refer to 22.05 for some packages because deno is broken in unstable
+  # Refer to 22.05 because deno is broken in unstable
+  # Follow updates here: https://github.com/NixOS/nixpkgs/issues/181982
   pkgs2205 = import
     (fetchTarball "http://nixos.org/channels/nixos-22.05/nixexprs.tar.xz") { };
-
-  # We pin Deno because unstable points to 1.23.4 which is broken now
-  # This commit points to 1.23.3: 7ea869f74ccf4b414f397fb77756ac5aa2df8785
-  # Follow updates here: https://github.com/NixOS/nixpkgs/issues/181982
-  pinDeno = import
-    (fetchTarball "https://github.com/NixOS/nixpkgs/archive/7ea869f74ccf4b414f397fb77756ac5aa2df8785.tar.gz") { };
 in
 {
   # Let Home Manager install and manage itself.
@@ -33,7 +32,7 @@ in
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "22.05";
+  home.stateVersion = "21.11";
 
   home.sessionVariables = {
     EDITOR = "nano";
@@ -55,7 +54,7 @@ in
         source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
       fi
     '';
-    initExtraBeforeCompInit = "source ${pkgsUnstable.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+    initExtraBeforeCompInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
     initExtra = ''
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -135,7 +134,7 @@ EOF
   };
 
   home.packages = [
-    pkgsUnstable.coreutils-prefixed
+    pkgs.coreutils-prefixed
     pkgs2205.deno
   ];
 }
