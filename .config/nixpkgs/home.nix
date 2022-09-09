@@ -67,13 +67,16 @@ in
         if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]]; then
           # Make a default shell.nix and then pop open an editor
           cat > shell.nix <<'EOF'
-{ pkgs2205 ? import (fetchTarball "http://nixos.org/channels/nixos-22.05/nixexprs.tar.xz") {} }:
-
-pkgs2205.mkShell {
-  buildInputs = [
-    pkgs2205.nodejs-16_x
-  ];
-}
+let
+    pkgs2205 = import (fetchTarball "http://nixos.org/channels/nixos-22.05/nixexprs.tar.xz") {};
+    pkgsUnstable = import (fetchTarball "http://nixos.org/channels/nixos-unstable/nixexprs.tar.xz") {};
+in
+    pkgs2205.mkShell {
+        buildInputs = [
+            pkgs2205.nodejs-18_x
+            pkgsUnstable.docker-compose
+        ];
+    }
 EOF
           nano shell.nix
         fi
