@@ -5,15 +5,14 @@
 let
   # This refers to channels in nix-channel --list
   # Outputs
-  #   home-manager https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz
-  #   nixpkgs https://nixos.org/channels/nixos-22.05
-  #   nixpkgs-unstable https://nixos.org/channels/nixpkgs-unstable
-  pkgs = import <nixpkgs-unstable> { };
+  #    home-manager https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz
+  #    nixpkgs https://channels.nixos.org/nixpkgs-22.05-darwin
+  pkgs = import <nixpkgs> { };
 
   # Refer to 22.05 because deno is broken in unstable
   # Follow updates here: https://github.com/NixOS/nixpkgs/issues/181982
-  pkgs2205 = import
-    (fetchTarball "http://nixos.org/channels/nixos-22.05/nixexprs.tar.xz") { };
+  #pkgs2205 = import
+  #  (fetchTarball "http://nixos.org/channels/nixos-22.05/nixexprs.tar.xz") { };
 in
 {
   # Let Home Manager install and manage itself.
@@ -45,6 +44,7 @@ in
       config = "git --git-dir=$HOME/.cfg/ --work-tree=$HOME";
       ls = "gls --color=auto --group-directories-first -A";
       ll = "gls --color=auto --group-directories-first -al";
+      nix-info = "nix-shell -p nix-info --run \"nix-info -m\"";
     };
     initExtraFirst = ''
       # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -66,17 +66,17 @@ in
         fi
         if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]]; then
           # Make a default shell.nix and then pop open an editor
+          niv init --latest
           cat > shell.nix <<'EOF'
 let
-    pkgs2205 = import (fetchTarball "http://nixos.org/channels/nixos-22.05/nixexprs.tar.xz") {};
-    pkgsUnstable = import (fetchTarball "http://nixos.org/channels/nixpkgs-unstable/nixexprs.tar.xz") {};
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs {};
 in
-    pkgs2205.mkShell {
-        buildInputs = [
-            pkgs2205.nodejs-18_x
-            pkgsUnstable.docker-compose
-        ];
-    }
+pkgs.mkShell {
+  buildInputs = [
+    pkgs.nodejs-18_x
+  ];
+}
 EOF
           nano shell.nix
         fi
@@ -138,6 +138,8 @@ EOF
 
   home.packages = [
     pkgs.coreutils-prefixed
-    pkgs2205.deno
+    pkgs.awscli2
+    pkgs.niv
+    pkgs.deno
   ];
 }
