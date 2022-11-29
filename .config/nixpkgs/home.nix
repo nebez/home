@@ -141,5 +141,6 @@ EOF
     pkgs.awscli2
     pkgs.niv
     pkgs.deno
+    pkgs.jq
   ];
 }
