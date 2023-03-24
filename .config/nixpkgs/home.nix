@@ -45,19 +45,9 @@ in
       ls = "gls --color=auto --group-directories-first -A";
       ll = "gls --color=auto --group-directories-first -al";
       nix-info = "nix-shell -p nix-info --run \"nix-info -m\"";
+      man-home-manager = "man home-configuration.nix";
     };
-    initExtraFirst = ''
-      # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-      # Initialization code that may require console input (password prompts, [y/n]
-      # confirmations, etc.) must go above this block; everything else may go below.
-      if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-        source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-      fi
-    '';
-    initExtraBeforeCompInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
     initExtra = ''
-      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
       # Nixify the current directory
       nixify() {
         if [ ! -e ./.envrc ]; then
@@ -86,6 +76,12 @@ EOF
       enable = true;
       plugins = [ "colored-man-pages" ];
     };
+  };
+
+  programs.oh-my-posh = {
+    enable = true;
+    enableZshIntegration = true;
+    useTheme = "emodipt-extend";
   };
 
   programs.git = {
@@ -142,5 +138,6 @@ EOF
     pkgs.niv
     pkgs.deno
     pkgs.jq
+    pkgs.gh
   ];
 }
