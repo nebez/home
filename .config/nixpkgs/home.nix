@@ -13,6 +13,11 @@ let
   # Follow updates here: https://github.com/NixOS/nixpkgs/issues/181982
   #pkgs2205 = import
   #  (fetchTarball "http://nixos.org/channels/nixos-22.05/nixexprs.tar.xz") { };
+
+  nixLocateAuto = pkgs.fetchzip {
+    url = "https://gist.github.com/nebez/47fa8522e5d52bddc36548b7ded27883/archive/6ca71e74dd974170f7d41b27d7d5bab4c118f17f.zip";
+    sha256 = "0xnv2xlmwspwnvij690dikdlww61fvdhcl7rjd8gknc6fdsadqmw";
+  };
 in
 {
   # Let Home Manager install and manage itself.
@@ -140,4 +145,6 @@ EOF
     pkgs.jq
     pkgs.gh
   ];
+
+  imports = [ "${nixLocateAuto}/default.nix" ];
 }
