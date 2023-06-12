@@ -51,6 +51,7 @@ in
       ll = "gls --color=auto --group-directories-first -al";
       nix-info = "nix-shell -p nix-info --run \"nix-info -m\"";
       man-home-manager = "man home-configuration.nix";
+      ssh-host-rm = "ssh-keygen -R";
     };
     initExtra = ''
       # Nixify the current directory
@@ -125,14 +126,13 @@ EOF
 
   programs.ssh = {
     enable = true;
+    hashKnownHosts = true;
+    extraConfig = ''
+      UseKeychain yes
+    '';
     matchBlocks = {
       "github.com" = {
         user = "git";
-      };
-      "*" = {
-        extraOptions = {
-          UseKeychain = "yes";
-        };
       };
     };
   };
