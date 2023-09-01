@@ -9,11 +9,6 @@ let
   #    nixpkgs https://channels.nixos.org/nixpkgs-22.05-darwin
   pkgs = import <nixpkgs> { };
 
-  # Refer to 22.05 because deno is broken in unstable
-  # Follow updates here: https://github.com/NixOS/nixpkgs/issues/181982
-  #pkgs2205 = import
-  #  (fetchTarball "http://nixos.org/channels/nixos-22.05/nixexprs.tar.xz") { };
-
   nixLocateAuto = pkgs.fetchzip {
     url = "https://gist.github.com/nebez/47fa8522e5d52bddc36548b7ded27883/archive/6ca71e74dd974170f7d41b27d7d5bab4c118f17f.zip";
     sha256 = "0xnv2xlmwspwnvij690dikdlww61fvdhcl7rjd8gknc6fdsadqmw";
@@ -53,6 +48,7 @@ in
       nix-repair = "nix-store --verify --check-contents --repair";
       man-home-manager = "man home-configuration.nix";
       ssh-host-rm = "ssh-keygen -R";
+      sm = "deno run --allow-all --no-check ~/code/github.com/nebez/sm/main.ts";
     };
     initExtra = ''
       # Nixify the current directory
