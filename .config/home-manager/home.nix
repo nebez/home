@@ -1,12 +1,6 @@
-# Home manager `programs` can be found here
-# https://github.com/nix-community/home-manager/blob/master/modules/programs
 { config, ... }:
 
 let
-  # This refers to channels in nix-channel --list
-  # Outputs
-  #    home-manager https://github.com/nix-community/home-manager/archive/release-22.05.tar.gz
-  #    nixpkgs https://channels.nixos.org/nixpkgs-22.05-darwin
   pkgs = import <nixpkgs> { };
 
   nixLocateAuto = pkgs.fetchzip {
@@ -15,27 +9,45 @@ let
   };
 in
 {
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-
-  # Home Manager needs a bit of information about you and the
-  # paths it should manage.
   home.username = "nebez";
   home.homeDirectory = "/Users/nebez";
-
-  # This value determines the Home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new Home Manager release introduces backwards
-  # incompatible changes.
-  #
-  # You can update Home Manager without changing this value. See
-  # the Home Manager release notes for a list of state version
-  # changes in each release.
-  home.stateVersion = "21.11";
+  home.stateVersion = "23.05";
 
   home.sessionVariables = {
     EDITOR = "nano";
   };
+
+  home.packages = [
+    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    # (pkgs.writeShellScriptBin "my-hello" ''
+    #   echo "Hello, ${config.home.username}!"
+    # '')
+    pkgs.coreutils-prefixed
+    pkgs.awscli2
+    pkgs.niv
+    pkgs.deno
+    pkgs.jq
+    pkgs.gh
+  ];
+
+  # Home Manager is pretty good at managing dotfiles. The primary way to manage
+  # plain files is through 'home.file'.
+  home.file = {
+    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
+    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
+    # # symlink to the Nix store copy.
+    # ".screenrc".source = dotfiles/screenrc;
+
+    # # You can also set the file content immediately.
+    # ".gradle/gradle.properties".text = ''
+    #   org.gradle.console=verbose
+    #   org.gradle.daemon.idletimeout=3600000
+    # '';
+  };
+
+  imports = [ "${nixLocateAuto}/default.nix" ];
+
+  programs.home-manager.enable = true;
 
   programs.zsh = {
     enable = true;
@@ -133,15 +145,4 @@ EOF
       };
     };
   };
-
-  home.packages = [
-    pkgs.coreutils-prefixed
-    pkgs.awscli2
-    pkgs.niv
-    pkgs.deno
-    pkgs.jq
-    pkgs.gh
-  ];
-
-  imports = [ "${nixLocateAuto}/default.nix" ];
 }
