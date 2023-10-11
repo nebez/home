@@ -96,7 +96,6 @@ EOF
   programs.oh-my-posh = {
     enable = true;
     enableZshIntegration = true;
-    useTheme = "emodipt-extend";
   };
 
   programs.git = {
