@@ -10,3 +10,14 @@ show app switcher on all displays [[source]](https://superuser.com/a/1625752)
 defaults write com.apple.Dock appswitcher-all-displays -bool true
 killall Dock
 ```
+
+## `bin`
+
+To bind more loopback interfaces other than 127.0.0.1, there's a launch daemon
+built specifically for Darwin in `bin/localhost_alias`. Install and
+uninstall it by running these commands:
+
+```bash
+./bin/localhost_alias/install
+./bin/localhost_alias/uninstall
+```

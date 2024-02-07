@@ -1,0 +1,61 @@
+#! /usr/bin/env bash
+
+# https://gist.github.com/nebez/140c8e344739a1b36585c0327da25e26
+
+set -eo pipefail
+
+readonly PROGNAME=$(basename $0)
+readonly PROGDIR=$(readlink -fn $(dirname $0))
+readonly ARGS="$@"
+
+warn() {
+    local message="$@"
+
+    printf "$message" > /dev/stderr
+}
+
+validate_ifconfig() {
+    local ifconfig_dir=$(which ifconfig)
+
+    if [[ "$ifconfig_dir" != "/sbin/ifconfig" ]]; then
+        warn "This might not be the right version of ifconfig built for Darwin.\n"
+        warn "Stopping...\n"
+        exit 1
+    fi
+}
+
+main() {
+    local from_address=$1
+    local to_address=$2
+
+    validate_ifconfig
+
+    if [[ -z "$from_address" || -z "$to_address" ]]; then
+        warn "Usage: ${PROGNAME} 2-255 2-255 [from and to range numbers (127.0.0.[from-to])]\n"
+        exit 1
+    fi
+
+    if ((from_address < 2 || from_address > 254)); then
+        warn "Usage: from_address must be between 2-254\n"
+        exit 1
+    fi
+
+    if ((to_address < 2 || to_address > 255)); then
+        warn "Usage: to_address must be between 2-255\n"
+        exit 1
+    fi
+
+    if ((from_address > to_address)); then
+        warn "Usage: from_address must be less than or equal to to_address\n"
+        exit 1
+    fi
+
+    for ((i=from_address;i<=to_address;i++)); do
+        warn "127.0.0.$i "
+        ifconfig lo0 alias 127.0.0.$i up
+    done
+    warn "\n"
+}
+
+main $ARGS
+exit 0

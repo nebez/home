@@ -1,0 +1,55 @@
+#! /usr/bin/env bash
+
+# https://gist.github.com/nebez/140c8e344739a1b36585c0327da25e26
+
+readonly PROGNAME=$(basename $0)
+readonly PROGDIR=$(readlink -fn $(dirname $0))
+readonly ARGS="$@"
+
+warn() {
+    local message="$@"
+
+    printf "$message" > /dev/stderr
+}
+
+validate_root() {
+    local current_user_id=$(id -u)
+    if [[ $current_user_id != 0 ]]; then
+        warn "Install script need to be run as root.\n"
+        exit 1
+    fi
+}
+
+main() {
+    validate_root
+
+    local local_plist_path=$(readlink -fn "${PROGDIR}/org.localhost.alias.plist")
+    local installation_plist_path="/Library/LaunchDaemons/org.localhost.alias.plist"
+
+    local local_bin_path=$(readlink -fn "${PROGDIR}/localhost_alias")
+    local installation_bin_path="/usr/local/bin/localhost_alias"
+
+    if [[ ! -f "$local_plist_path" ]]; then
+        warn "Unable to find local plist file. Does it exist?\n"
+        exit 1
+    fi
+
+    if [[ ! -f "$local_bin_path" ]]; then
+        warn "Unable to find local bin file. Does it exist?\n"
+        exit 1
+    fi
+
+    warn "Installing bin to:    $installation_bin_path\n"
+    cp $local_bin_path $installation_bin_path
+    chown root:wheel $installation_bin_path
+
+    warn "Installing plist to:  $installation_plist_path \n"
+    cp $local_plist_path $installation_plist_path
+    chown root:wheel $installation_plist_path
+    chmod o-w $installation_plist_path
+
+    warn "Installed. Launching...\n"
+    launchctl load $installation_plist_path
+}
+
+main $ARGS

@@ -1,0 +1,38 @@
+#! /usr/bin/env bash
+
+# https://gist.github.com/nebez/140c8e344739a1b36585c0327da25e26
+
+readonly PROGNAME=$(basename $0)
+readonly PROGDIR=$(readlink -fn $(dirname $0))
+readonly ARGS="$@"
+
+warn() {
+    local message="$@"
+
+    printf "$message" > /dev/stderr
+}
+
+validate_root() {
+    local current_user_id=$(id -u)
+    if [[ $current_user_id != 0 ]]; then
+        warn "Install script need to be run as root.\n"
+        exit 1
+    fi
+}
+
+main() {
+    validate_root
+
+    local installation_plist_path="/Library/LaunchDaemons/org.localhost.alias.plist"
+    local installation_bin_path="/usr/local/bin/localhost_alias"
+
+    warn "Uninstalling launchctl service"
+    launchctl unload $installation_plist_path
+
+    warn "Deleting links...\n"
+    rm -v $installation_plist_path $installation_bin_path
+
+    warn "Uninstalled\n"
+}
+
+main $ARGS
