@@ -21,3 +21,5 @@ uninstall it by running these commands:
 ./bin/localhost_alias/install
 ./bin/localhost_alias/uninstall
 ```
+
+Currently it binds from `.10` to `.20` (inclusive). Adjust the `.plist` file to expand or contract the range.
