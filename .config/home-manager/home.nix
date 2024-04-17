@@ -2,6 +2,7 @@
 
 let
   pkgs = import <nixpkgs> { };
+  pkgsUnstable = import <nixpkgs-unstable> { };
 
   nixLocateAuto = pkgs.fetchzip {
     url = "https://gist.github.com/nebez/47fa8522e5d52bddc36548b7ded27883/archive/6ca71e74dd974170f7d41b27d7d5bab4c118f17f.zip";
@@ -25,9 +26,11 @@ in
     pkgs.coreutils-prefixed
     pkgs.awscli2
     pkgs.niv
-    pkgs.deno
+    pkgsUnstable.deno
     pkgs.jq
     pkgs.gh
+    pkgs.amazon-ecr-credential-helper
+    pkgs.nnn
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -51,7 +54,7 @@ in
 
   programs.zsh = {
     enable = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
     shellAliases = {
       config = "git --git-dir=$HOME/.cfg/ --work-tree=$HOME";
       ls = "gls --color=auto --group-directories-first -A";
