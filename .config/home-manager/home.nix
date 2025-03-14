@@ -140,6 +140,7 @@ EOF
     hashKnownHosts = true;
     extraConfig = ''
       UseKeychain yes
+      IdentityAgent "~/Library/Group Containers/group.strongbox.mac.mcguill/agent.sock"
     '';
     matchBlocks = {
       "github.com" = {
