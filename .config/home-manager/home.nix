@@ -26,11 +26,11 @@ in
     pkgs.coreutils-prefixed
     pkgs.awscli2
     pkgs.niv
-    pkgsUnstable.deno
     pkgs.jq
-    pkgs.gh
-    pkgs.amazon-ecr-credential-helper
     pkgs.nnn
+    pkgs.python313 # This is for codex
+    pkgsUnstable.deno
+    pkgsUnstable.codex
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -65,7 +65,7 @@ in
       ssh-host-rm = "ssh-keygen -R";
       sm = "deno run --allow-all --no-check ~/code/github.com/nebez/sm/main.ts";
     };
-    initExtra = ''
+    initContent = ''
       # Nixify the current directory
       nixify() {
         if [ ! -e ./.envrc ]; then
