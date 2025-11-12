@@ -1,14 +1,5 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
-let
-  pkgs = import <nixpkgs> { };
-  pkgsUnstable = import <nixpkgs-unstable> { };
-
-  nixLocateAuto = pkgs.fetchzip {
-    url = "https://gist.github.com/nebez/47fa8522e5d52bddc36548b7ded27883/archive/6ca71e74dd974170f7d41b27d7d5bab4c118f17f.zip";
-    sha256 = "0xnv2xlmwspwnvij690dikdlww61fvdhcl7rjd8gknc6fdsadqmw";
-  };
-in
 {
   home.username = "nebez";
   home.homeDirectory = "/Users/nebez";
@@ -29,8 +20,8 @@ in
     pkgs.jq
     pkgs.nnn
     pkgs.python313 # This is for codex
-    pkgsUnstable.deno
-    pkgsUnstable.codex
+    pkgs.deno
+    pkgs.codex
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -48,8 +39,6 @@ in
     # '';
   };
 
-  imports = [ "${nixLocateAuto}/default.nix" ];
-
   programs.home-manager.enable = true;
 
   programs.zsh = {
@@ -66,29 +55,29 @@ in
       sm = "deno run --allow-all --no-check ~/code/github.com/nebez/sm/main.ts";
     };
     initContent = ''
-      # Nixify the current directory
-      nixify() {
-        if [ ! -e ./.envrc ]; then
-          echo "use nix" > .envrc
-          direnv allow
-        fi
-        if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]]; then
-          # Make a default shell.nix and then pop open an editor
-          niv init --latest
-          cat > shell.nix <<'EOF'
-let
-  sources = import ./nix/sources.nix;
-  pkgs = import sources.nixpkgs {};
-in
-pkgs.mkShell {
-  buildInputs = [
-    pkgs.nodejs-18_x
-  ];
-}
-EOF
-          nano shell.nix
-        fi
+            # Nixify the current directory
+            nixify() {
+              if [ ! -e ./.envrc ]; then
+                echo "use nix" > .envrc
+                direnv allow
+              fi
+              if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]]; then
+                # Make a default shell.nix and then pop open an editor
+                niv init --latest
+                cat > shell.nix <<'EOF'
+      let
+        sources = import ./nix/sources.nix;
+        pkgs = import sources.nixpkgs {};
+      in
+      pkgs.mkShell {
+        buildInputs = [
+          pkgs.nodejs-18_x
+        ];
       }
+      EOF
+                nano shell.nix
+              fi
+            }
     '';
     oh-my-zsh = {
       enable = true;
@@ -103,30 +92,32 @@ EOF
 
   programs.git = {
     enable = true;
-    userName = "Nebez Briefkani";
-    userEmail = "me@nebezb.com";
-    aliases = {
-      s = "status -sb";
-      last = "log -1 HEAD";
-      proon = "fetch origin --prune";
-      aliases = "!git config -l | grep alias | cut -c 7-";
-      l = "log --pretty=oneline --abbrev-commit";
-      ll = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
-    };
-    extraConfig = {
+    settings = {
+      user.name = "Nebez Briefkani";
+      user.email = "me@nebezb.com";
       # We do this because, otherwise, git attempts to use the openssh built
       # from nix which doesn't support UseKeychain. See below for more:
       # https://github.com/NixOS/nixpkgs/issues/15686
       core.sshCommand = "/usr/bin/ssh";
+      alias = {
+        s = "status -sb";
+        last = "log -1 HEAD";
+        proon = "fetch origin --prune";
+        aliases = "!git config -l | grep alias | cut -c 7-";
+        l = "log --pretty=oneline --abbrev-commit";
+        ll = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+      };
     };
     ignores = [
       ".direnv/"
     ];
-    delta = {
-      enable = true;
-      options = {
-        features = "line-numbers";
-      };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      features = "line-numbers";
     };
   };
 
@@ -137,12 +128,23 @@ EOF
 
   programs.ssh = {
     enable = true;
-    hashKnownHosts = true;
-    extraConfig = ''
-      UseKeychain yes
-      IdentityAgent "~/Library/Group Containers/group.strongbox.mac.mcguill/agent.sock"
-    '';
+    enableDefaultConfig = false;
     matchBlocks = {
+      "*" = {
+        forwardAgent = false;
+        addKeysToAgent = "no";
+        compression = false;
+        serverAliveInterval = 0;
+        serverAliveCountMax = 3;
+        userKnownHostsFile = "~/.ssh/known_hosts";
+        controlMaster = "no";
+        controlPath = "~/.ssh/master-%r@%n:%p";
+        controlPersist = "no";
+        hashKnownHosts = true;
+        identityAgent = "~/Library/Group Containers/group.strongbox.mac.mcguill/agent.sock";
+        # UseKeychain = true; # This config needs to move to extraConfig, but I'm not sure I need it.
+
+      };
       "github.com" = {
         user = "git";
       };
