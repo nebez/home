@@ -141,7 +141,7 @@
         controlPath = "~/.ssh/master-%r@%n:%p";
         controlPersist = "no";
         hashKnownHosts = true;
-        identityAgent = "~/Library/Group Containers/group.strongbox.mac.mcguill/agent.sock";
+        identityAgent = "\"~/Library/Group Containers/group.strongbox.mac.mcguill/agent.sock\"";
         # UseKeychain = true; # This config needs to move to extraConfig, but I'm not sure I need it.
 
       };
