@@ -48,8 +48,6 @@
       config = "git --git-dir=$HOME/.cfg/ --work-tree=$HOME";
       ls = "gls --color=auto --group-directories-first -A";
       ll = "gls --color=auto --group-directories-first -al";
-      nix-info = "nix-shell -p nix-info --run \"nix-info -m\"";
-      nix-repair = "nix-store --verify --check-contents --repair";
       man-home-manager = "man home-configuration.nix";
       ssh-host-rm = "ssh-keygen -R";
       sm = "deno run --allow-all --no-check ~/code/github.com/nebez/sm/main.ts";
