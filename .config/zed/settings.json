@@ -78,5 +78,10 @@
     "metrics": false
   },
   "ui_font_size": 14,
-  "buffer_font_size": 12
+  "buffer_font_size": 12,
+  "languages": {
+    "Nix": {
+      "language_servers": ["nixd", "!nil"]
+    }
+  }
 }

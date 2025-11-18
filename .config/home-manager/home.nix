@@ -22,6 +22,7 @@
     pkgs.python313 # This is for codex
     pkgs.deno
     pkgs.codex
+    pkgs.nixd
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
