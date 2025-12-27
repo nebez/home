@@ -23,6 +23,7 @@
     pkgs.deno
     pkgs.codex
     pkgs.nixd
+    pkgs.smartmontools
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -84,10 +85,10 @@
     };
   };
 
-  programs.oh-my-posh = {
-    enable = true;
-    enableZshIntegration = true;
-  };
+  # programs.oh-my-posh = {
+  #   enable = true;
+  #   enableZshIntegration = true;
+  # };
 
   programs.git = {
     enable = true;
