@@ -7,6 +7,14 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "context_servers": {
+    "svelte-mcp": {
+      "settings": {},
+        
+      "enabled": true,
+      "url": "https://mcp.svelte.dev/mcp"
+    }
+  },
   "hover_popover_enabled": true,
   "inlay_hints": {
     "show_other_hints": true
