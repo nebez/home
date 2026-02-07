@@ -10,20 +10,17 @@
   };
 
   home.packages = [
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
+    (pkgs.writeShellScriptBin "nixify" (builtins.readFile ./nixify.sh))
+
     pkgs.coreutils-prefixed
     pkgs.awscli2
     pkgs.niv
     pkgs.jq
     pkgs.nnn
-    pkgs.python313 # This is for codex
     pkgs.deno
-    pkgs.codex
     pkgs.nixd
     pkgs.smartmontools
+    pkgs.pnpm
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -53,32 +50,8 @@
       man-home-manager = "man home-configuration.nix";
       ssh-host-rm = "ssh-keygen -R";
       sm = "deno run --allow-all --no-check ~/code/github.com/nebez/sm/main.ts";
+      home-manager-flake-update = "nix flake update --flake ~/.config/home-manager/";
     };
-    initContent = ''
-            # Nixify the current directory
-            nixify() {
-              if [ ! -e ./.envrc ]; then
-                echo "use nix" > .envrc
-                direnv allow
-              fi
-              if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]]; then
-                # Make a default shell.nix and then pop open an editor
-                niv init --latest
-                cat > shell.nix <<'EOF'
-      let
-        sources = import ./nix/sources.nix;
-        pkgs = import sources.nixpkgs {};
-      in
-      pkgs.mkShell {
-        buildInputs = [
-          pkgs.nodejs-18_x
-        ];
-      }
-      EOF
-                nano shell.nix
-              fi
-            }
-    '';
     oh-my-zsh = {
       enable = true;
       plugins = [ "colored-man-pages" ];
