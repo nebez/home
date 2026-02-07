@@ -7,13 +7,14 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "context_servers": {
-    "svelte-mcp": {
-      "settings": {},
-        
-      "enabled": true,
-      "url": "https://mcp.svelte.dev/mcp"
+  "agent_servers": {
+    "codex": {
+      "default_model": "gpt-5.3-codex/high",
+      "default_mode": "auto"
     }
+  },
+  "context_servers": {
+    
   },
   "hover_popover_enabled": true,
   "inlay_hints": {
@@ -94,6 +95,7 @@
     "diagnostics": false,
     "metrics": false
   },
+  "tab_size": 4,
   "ui_font_size": 14,
   "buffer_font_size": 12,
   "languages": {
