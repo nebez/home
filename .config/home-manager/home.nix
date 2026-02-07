@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   home.username = "nebez";
@@ -7,11 +7,15 @@
 
   home.sessionVariables = {
     EDITOR = "nano";
+    PNPM_HOME = "/Users/nebez/.pnpm/bin";
   };
+
+  home.sessionPath = [
+    "/Users/nebez/.pnpm/bin"
+  ];
 
   home.packages = [
     (pkgs.writeShellScriptBin "nixify" (builtins.readFile ./nixify.sh))
-
     pkgs.coreutils-prefixed
     pkgs.awscli2
     pkgs.niv
