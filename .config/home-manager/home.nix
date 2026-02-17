@@ -26,6 +26,7 @@
     pkgs.smartmontools
     pkgs.pnpm
     pkgs.nodejs-slim_25
+    pkgs.ripgrep
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
