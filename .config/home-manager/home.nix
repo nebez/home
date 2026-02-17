@@ -25,6 +25,7 @@
     pkgs.nixd
     pkgs.smartmontools
     pkgs.pnpm
+    pkgs.nodejs-slim_25
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -87,6 +88,7 @@
     };
     ignores = [
       ".direnv/"
+      ".DS_Store"
     ];
   };
 
