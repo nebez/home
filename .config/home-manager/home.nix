@@ -86,6 +86,7 @@
         aliases = "!git config -l | grep alias | cut -c 7-";
         l = "log --pretty=oneline --abbrev-commit";
         ll = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+        cwdeploy = "deno run --allow-read --allow-run --allow-env jsr:@nebez/cwdeploy@0.2.0";
       };
     };
     ignores = [
