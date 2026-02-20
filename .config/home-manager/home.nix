@@ -78,6 +78,7 @@
       # from nix which doesn't support UseKeychain. See below for more:
       # https://github.com/NixOS/nixpkgs/issues/15686
       core.sshCommand = "/usr/bin/ssh";
+      init.defaultBranch = "main";
       alias = {
         s = "status -sb";
         last = "log -1 HEAD";
