@@ -16,6 +16,7 @@
 
   home.packages = [
     (pkgs.writeShellScriptBin "nixify" (builtins.readFile ./nixify.sh))
+    (pkgs.writeShellScriptBin "c" (builtins.readFile ./c.sh))
     pkgs.coreutils-prefixed
     pkgs.awscli2
     pkgs.niv
