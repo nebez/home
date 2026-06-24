@@ -1,6 +1,16 @@
 # Nixify the current directory
-if [ ! -e ./.envrc ]; then
-    echo "use nix" > .envrc
+write_envrc() {
+    cat > .envrc <<'EOF'
+watch_file shell.nix default.nix nix/sources.nix nix/sources.json
+use nix
+EOF
+}
+
+if [[ ! -e ./.envrc ]]; then
+    write_envrc
+    direnv allow
+elif [[ "$(< ./.envrc)" == "use nix" ]]; then
+    write_envrc
     direnv allow
 fi
 if [[ ! -e shell.nix ]] && [[ ! -e default.nix ]]; then
