@@ -66,11 +66,6 @@
     };
   };
 
-  # programs.oh-my-posh = {
-  #   enable = true;
-  #   enableZshIntegration = true;
-  # };
-
   programs.git = {
     enable = true;
     settings = {
@@ -107,6 +102,11 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+  };
+
+  programs.mise = {
+      enable = true;
+      enableZshIntegration = true;
   };
 
   programs.ssh = {
