@@ -7,6 +7,15 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "git_panel": {
+    "dock": "right"
+  },
   "agent_servers": {
     "codex": {
       "default_model": "gpt-5.3-codex/high",
@@ -25,6 +34,7 @@
   },
   "format_on_save": "off",
   "agent": {
+    "dock": "left",
     "use_modifier_to_send": true,
     "play_sound_when_agent_done": true,
     "model_parameters": []
@@ -39,6 +49,7 @@
     "font_family": "ZedMono Nerd Font"
   },
   "project_panel": {
+    "dock": "right",
     "button": true,
     "hide_root": true
   },
