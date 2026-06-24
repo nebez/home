@@ -26,7 +26,7 @@
     pkgs.nixd
     pkgs.smartmontools
     pkgs.pnpm
-    pkgs.nodejs-slim_25
+    pkgs.nodejs-slim
     pkgs.ripgrep
   ];
 
@@ -112,24 +112,24 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks = {
+    settings = {
       "*" = {
-        forwardAgent = false;
-        addKeysToAgent = "no";
-        compression = false;
-        serverAliveInterval = 0;
-        serverAliveCountMax = 3;
-        userKnownHostsFile = "~/.ssh/known_hosts";
-        controlMaster = "no";
-        controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "no";
-        hashKnownHosts = true;
-        identityAgent = "\"~/Library/Group Containers/group.strongbox.mac.mcguill/agent.sock\"";
+        ForwardAgent = false;
+        AddKeysToAgent = "no";
+        Compression = false;
+        ServerAliveInterval = 0;
+        ServerAliveCountMax = 3;
+        UserKnownHostsFile = "~/.ssh/known_hosts";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
+        HashKnownHosts = true;
+        IdentityAgent = "\"~/Library/Group Containers/group.strongbox.mac.mcguill/agent.sock\"";
         # UseKeychain = true; # This config needs to move to extraConfig, but I'm not sure I need it.
 
       };
       "github.com" = {
-        user = "git";
+        User = "git";
       };
     };
   };
