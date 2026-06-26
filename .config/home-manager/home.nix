@@ -7,7 +7,7 @@
 
   home.sessionVariables = {
     EDITOR = "nano";
-    PNPM_HOME = "/Users/nebez/.pnpm/bin";
+    PNPM_HOME = "/Users/nebez/.pnpm";
   };
 
   home.sessionPath = [
