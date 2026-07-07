@@ -8,6 +8,7 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
 autoload -U promptinit
 promptinit
+PURE_GIT_PULL=0
 zstyle :prompt:pure:git:stash show yes
 zstyle :prompt:pure:git:dirty detailed yes
 zstyle :prompt:pure:environment:node_version show yes
