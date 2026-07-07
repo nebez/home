@@ -1,0 +1,8 @@
+brew "coreutils"
+brew "git-delta"
+brew "jq"
+brew "mise"
+brew "nnn"
+brew "ripgrep"
+
+cask "ghostty"
