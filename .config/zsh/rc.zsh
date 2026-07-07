@@ -11,6 +11,7 @@ promptinit
 zstyle :prompt:pure:git:stash show yes
 zstyle :prompt:pure:git:dirty detailed yes
 zstyle :prompt:pure:environment:node_version show yes
+zstyle :prompt:pure:environment:node_version symbol '⬢ '
 zstyle :prompt:pure:environment:nix-shell show no
 zstyle :prompt:pure:path:separator dim yes
 prompt pure
