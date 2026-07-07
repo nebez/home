@@ -1,0 +1,15 @@
+Host *
+  ForwardAgent no
+  AddKeysToAgent no
+  Compression no
+  ServerAliveInterval 0
+  ServerAliveCountMax 3
+  UserKnownHostsFile ~/.ssh/known_hosts
+  ControlMaster no
+  ControlPath ~/.ssh/master-%r@%n:%p
+  ControlPersist no
+  HashKnownHosts yes
+  IdentityAgent "~/Library/Group Containers/group.strongbox.mac.mcguill/agent.sock"
+
+Host github.com
+  User git

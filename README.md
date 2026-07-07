@@ -2,6 +2,30 @@
 
 https://www.atlassian.com/git/tutorials/dotfiles
 
+## setup
+
+These dotfiles are meant to be opt-in. The repo provides partial files under
+`.config/`; it should not own or overwrite local startup files like
+`~/.zprofile` and `~/.zshrc`.
+
+To enable the shared zsh login/session setup, add this to `~/.zprofile`:
+
+```zsh
+[[ -r "$HOME/.config/zsh/profile.zsh" ]] && source "$HOME/.config/zsh/profile.zsh"
+```
+
+To enable the shared interactive zsh setup, add this to `~/.zshrc`:
+
+```zsh
+[[ -r "$HOME/.config/zsh/rc.zsh" ]] && source "$HOME/.config/zsh/rc.zsh"
+```
+
+To enable the shared SSH setup, add this to `~/.ssh/config`:
+
+```sshconfig
+Include ~/.config/ssh/config
+```
+
 ## qol changes
 
 show app switcher on all displays [[source]](https://superuser.com/a/1625752)
