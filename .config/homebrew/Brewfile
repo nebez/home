@@ -3,6 +3,7 @@ brew "git-delta"
 brew "jq"
 brew "mise"
 brew "nnn"
+brew "pure"
 brew "ripgrep"
 
 cask "ghostty"

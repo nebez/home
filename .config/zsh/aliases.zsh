@@ -1,1 +1,6 @@
 alias config='git --git-dir="$HOME/.cfg/" --work-tree="$HOME"'
+alias ls='gls --color=auto --group-directories-first -A'
+alias ll='gls --color=auto --group-directories-first -al'
+alias ssh-host-rm='ssh-keygen -R'
+alias sm='deno run --allow-all --no-check ~/code/github.com/nebez/sm/main.ts'
+alias cwdeploy='deno run --allow-read --allow-run --allow-env jsr:@nebez/cwdeploy@0.2.0'
