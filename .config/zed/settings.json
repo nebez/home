@@ -16,12 +16,6 @@
   "git_panel": {
     "dock": "right"
   },
-  "agent_servers": {
-    "codex": {
-      "default_model": "gpt-5.3-codex/high",
-      "default_mode": "auto"
-    }
-  },
   "context_servers": {
     
   },
@@ -108,10 +102,5 @@
   },
   "tab_size": 4,
   "ui_font_size": 14,
-  "buffer_font_size": 12,
-  "languages": {
-    "Nix": {
-      "language_servers": ["nixd", "!nil"]
-    }
-  }
+  "buffer_font_size": 12
 }
