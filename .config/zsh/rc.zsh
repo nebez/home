@@ -6,6 +6,8 @@ autoload -Uz compinit
 compinit
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
+bindkey $'\e\x7f' backward-kill-word
+
 autoload -U promptinit
 promptinit
 PURE_GIT_PULL=0
