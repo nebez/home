@@ -1,0 +1,2 @@
+keybind = global:option+backquote=toggle_visibility
+macos-option-as-alt = true
