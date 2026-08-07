@@ -1,2 +1,4 @@
-keybind = global:option+backquote=toggle_visibility
 macos-option-as-alt = true
+keybind = global:option+backquote=toggle_visibility
+keybind = super+v=paste_from_clipboard
+keybind = super+c=copy_to_clipboard
