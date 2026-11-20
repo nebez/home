@@ -6,5 +6,3 @@ brew "mise"
 brew "nnn"
 brew "pure"
 brew "ripgrep"
-
-cask "ghostty"
